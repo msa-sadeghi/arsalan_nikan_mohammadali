@@ -13,6 +13,7 @@ meat_rect = meat_image.get_rect(left = random.randint(0, SCREEN_WIDTH- meat_imag
 font = pygame.font.Font("assets/font.otf", 28)
 
 score = 0
+lives = 3
 wolf_normal_speed = 5
 wolf_boost_speed = 20
 wolf_speed = wolf_normal_speed
@@ -24,6 +25,9 @@ boost_rect = boost_text.get_rect(centerx = SCREEN_WIDTH/2 , top = 0)
 
 score_text = font.render(f"score: {score}", True, (10,230,210))
 score_rect = score_text.get_rect(topleft=(0,0))
+
+lives_text = font.render(f"lives: {lives}", True, (10,230,210))
+lives_rect = lives_text.get_rect(topright=(SCREEN_WIDTH,0))
 
 running = True
 while running:
@@ -51,12 +55,19 @@ while running:
     meat_rect.y += 5
     if meat_rect.top >= SCREEN_HEIGHT:
         meat_rect = meat_image.get_rect(left =random.randint(0, SCREEN_WIDTH- meat_image.get_width()), top = 100)
+        lives -= 1
     boost_text = font.render(f"Boost: {boost_level}", True, (10,230,210))
     score_text = font.render(f"score: {score}", True, (10,230,210))
+    lives_text = font.render(f"lives: {lives}", True, (10,230,210))
     screen.fill((0,0,0))
     screen.blit(boost_text, boost_rect)
     screen.blit(wolf_image, wolf_rect)
     screen.blit(meat_image, meat_rect)
     screen.blit(score_text, score_rect)
+    screen.blit(lives_text, lives_rect)
     pygame.display.update()
     clock.tick(FPS)
+
+
+# TODO   اضافه کردن صداها
+# اضافه کردن game over
