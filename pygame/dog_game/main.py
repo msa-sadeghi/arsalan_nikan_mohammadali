@@ -11,6 +11,7 @@ wolf_rect = wolf_image.get_rect(centerx = SCREEN_WIDTH/2, bottom = SCREEN_HEIGHT
 meat_image = pygame.image.load("assets/meat.png")
 meat_rect = meat_image.get_rect(left = random.randint(0, SCREEN_WIDTH- meat_image.get_width()), top = 100)
 font = pygame.font.Font("assets/font.otf", 28)
+font72 = pygame.font.Font("assets/font.otf", 72)
 
 score = 0
 lives = 3
@@ -28,6 +29,38 @@ score_rect = score_text.get_rect(topleft=(0,0))
 
 lives_text = font.render(f"lives: {lives}", True, (10,230,210))
 lives_rect = lives_text.get_rect(topright=(SCREEN_WIDTH,0))
+
+
+def game_over():
+    # pygame.mixer.music.stop()
+    global score,lives, running, boost_level
+    game_over_text = font72.render("Game Over, Press 'Enter'\n to play again", True, (190, 40, 180))
+    game_over_rect = game_over_text.get_rect(center = (SCREEN_WIDTH/2, SCREEN_HEIGHT/2))
+    # boost_text = font.render(f"Boost: {boost_level}", True, (10,230,210))
+    # score_text = font.render(f"score: {score}", True, (10,230,210))
+    # lives_text = font.render(f"lives: {lives}", True, (10,230,210))
+    screen.fill((0,0,0))
+    screen.blit(game_over_text, game_over_rect)
+    # screen.blit(boost_text, boost_rect)
+    # screen.blit(wolf_image, wolf_rect)
+    # screen.blit(meat_image, meat_rect)
+    # screen.blit(score_text, score_rect)
+    # screen.blit(lives_text, lives_rect)
+    pygame.display.update()
+    paused = True
+    while paused:
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_RETURN:
+                    # pygame.mixer.music.play(-1)
+                    paused = False
+                    score = 0
+                    lives = 3
+                    boost_level = 100
+                if event.key == pygame.K_ESCAPE:
+                    paused = False
+                    running = False
+
 
 running = True
 while running:
@@ -51,11 +84,12 @@ while running:
         score += 1
         meat_rect = meat_image.get_rect(left =random.randint(0, SCREEN_WIDTH- meat_image.get_width()), top = 100)
         
-    
     meat_rect.y += 5
     if meat_rect.top >= SCREEN_HEIGHT:
         meat_rect = meat_image.get_rect(left =random.randint(0, SCREEN_WIDTH- meat_image.get_width()), top = 100)
         lives -= 1
+        if lives <= 0:
+            game_over()
     boost_text = font.render(f"Boost: {boost_level}", True, (10,230,210))
     score_text = font.render(f"score: {score}", True, (10,230,210))
     lives_text = font.render(f"lives: {lives}", True, (10,230,210))
@@ -67,7 +101,3 @@ while running:
     screen.blit(lives_text, lives_rect)
     pygame.display.update()
     clock.tick(FPS)
-
-
-# TODO   اضافه کردن صداها
-# اضافه کردن game over
