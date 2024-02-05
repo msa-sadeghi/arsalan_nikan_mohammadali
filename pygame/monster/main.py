@@ -50,9 +50,6 @@ def check_collisions():
                 select_target_monster()
             else:
                 start_new_level()
-
-
-
 running = True
 while running:
     for event in pygame.event.get():
