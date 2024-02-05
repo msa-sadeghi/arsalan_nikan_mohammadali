@@ -1,8 +1,8 @@
 from constants import *
 from player import Player
 
-
-my_player = Player()
+player_bullet_group = pygame.sprite.Group()
+my_player = Player(player_bullet_group)
 
 running = True
 while running:
@@ -10,8 +10,12 @@ while running:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 running = False
+            if event.key == pygame.K_SPACE:
+                my_player.fire()
                 
     screen.fill((0,0,0))
+    player_bullet_group.update()
+    player_bullet_group.draw(screen)
     my_player.draw()
     my_player.move()
     pygame.display.update()

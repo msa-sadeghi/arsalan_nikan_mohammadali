@@ -1,15 +1,20 @@
 from pygame.sprite import Sprite
 from constants import *
+from bullet import Bullet
 class Player(Sprite):
-    def __init__(self):
+    def __init__(self, bullet_group):
         super().__init__()
         self.image = pygame.image.load("assets/space.png")
+        self.image = pygame.transform.rotate(self.image, 180)
         self.rect = self.image.get_rect()
         self.rect.bottom = SCREEN_HEIGHT
         self.rect.centerx = SCREEN_WIDTH/2
+        self.bullet_group = bullet_group
         
     def draw(self):
         screen.blit(self.image, self.rect)
+    def fire(self)   :
+        Bullet(self.rect.centerx, self.rect.top, self.bullet_group)
         
     def move(self):
         keys = pygame.key.get_pressed()
