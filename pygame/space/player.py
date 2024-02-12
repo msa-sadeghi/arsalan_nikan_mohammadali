@@ -14,7 +14,8 @@ class Player(Sprite):
     def draw(self):
         screen.blit(self.image, self.rect)
     def fire(self)   :
-        Bullet(self.rect.centerx, self.rect.top, self.bullet_group)
+        if len(self.bullet_group) < 5:
+            Bullet(self.rect.centerx, self.rect.top, self.bullet_group)
         
     def move(self):
         keys = pygame.key.get_pressed()
