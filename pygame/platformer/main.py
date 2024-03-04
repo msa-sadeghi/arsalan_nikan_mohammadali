@@ -1,11 +1,15 @@
 import pygame
 from world import World
 from level1 import world_data
+from player import Player
 pygame.init()
 screen_width = 1024
 screen_height = 704
 screen = pygame.display.set_mode((screen_width, screen_height))
 clock = pygame.time.Clock()
+
+my_player = Player()
+
 game_world = World(world_data)
 running = True
 while running:
@@ -14,5 +18,6 @@ while running:
             running = False
             
     game_world.draw(screen)
+    my_player.draw(screen)
     pygame.display.update()
     clock.tick(60)
