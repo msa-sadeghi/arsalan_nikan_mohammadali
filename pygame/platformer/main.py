@@ -9,8 +9,8 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 clock = pygame.time.Clock()
 
 my_player = Player()
-
-game_world = World(world_data)
+enemy_group = pygame.sprite.Group()
+game_world = World(world_data, enemy_group)
 running = True
 while running:
     for event in pygame.event.get():
@@ -18,7 +18,9 @@ while running:
             running = False
             
     game_world.draw(screen)
+    enemy_group.draw(screen)
+    enemy_group.update()
     my_player.draw(screen)
-    my_player.move(game_world.tile_map)
+    my_player.move(game_world.tile_map, enemy_group)
     pygame.display.update()
     clock.tick(60)

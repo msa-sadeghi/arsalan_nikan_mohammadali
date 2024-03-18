@@ -1,6 +1,7 @@
 import pygame
+from enemy import Enemy
 class World:
-    def __init__(self, world_data):
+    def __init__(self, world_data,enemy_group):
         self.tile_map = []
         img  = pygame.image.load("assets/background.png")
         self.bg_img = pygame.transform.scale(img, (1024, 704))
@@ -22,6 +23,10 @@ class World:
                     rect = img.get_rect(topleft = (j * 32, i * 32))
                     item = (img, rect)
                     self.tile_map.append(item)
+                    
+                if world_data[i][j] == 3:
+                    Enemy(j * 32, i * 32, enemy_group)
+                    
                     
     def draw(self, screen):
         screen.blit(self.bg_img, self.bg_rect)

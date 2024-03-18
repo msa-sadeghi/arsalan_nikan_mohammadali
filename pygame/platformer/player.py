@@ -23,7 +23,11 @@ class Player(Sprite):
         self.jump_sound = pygame.mixer.Sound("assets/jump.wav")
         self.last_update_time = pygame.time.get_ticks()
         self.moving = False
+        self.ghost_image = pygame.image.load("assets/ghost.png")
     def draw(self, screen):
+        if self.health <= 0:
+            self.alive = False
+            self.image = self.ghost_image
         screen.blit(self.image, self.rect)
         
     def animation(self):
@@ -40,39 +44,49 @@ class Player(Sprite):
             self.image = self.left_images[self.frame_index]
             
         
-    def move(self, tiles):
-        dx = 0
-        dy = 0
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_LEFT]:
-            self.direction = -1
-            self.moving = True
-            dx -= 5
-        if keys[pygame.K_RIGHT]:
-            self.direction = 1
-            self.moving = True
-            dx += 5
-        if not keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT]:
-            self.moving = False
-        if keys[pygame.K_SPACE] and not self.jumped:
-            self.jump_sound.play()
-            self.yvelocity = -15
-            self.jumped = True
-            
-        dy += self.yvelocity
-        self.yvelocity += 1
-        for t in tiles:
-            if t[1].colliderect(self.rect.x + dx, self.rect.y, self.rect.width, self.rect.height):
-                dx = 0
-            if t[1].colliderect(self.rect.x, self.rect.y + dy, self.rect.width, self.rect.height):
-                if self.yvelocity > 0:
-                    self.yvelocity = 0
-                    dy = t[1].top - self.rect.bottom
-                    self.jumped = False
-                else:
-                    self.yvelocity = 0
-                    dy = t[1].bottom - self.rect.top
-            
-        self.rect.x += dx
-        self.rect.y += dy
-        self.animation()
+    def move(self, tiles, enemy_group):
+        if self.alive:
+            dx = 0
+            dy = 0
+            keys = pygame.key.get_pressed()
+            if keys[pygame.K_LEFT]:
+                self.direction = -1
+                self.moving = True
+                dx -= 5
+            if keys[pygame.K_RIGHT]:
+                self.direction = 1
+                self.moving = True
+                dx += 5
+            if not keys[pygame.K_LEFT] and not keys[pygame.K_RIGHT]:
+                self.moving = False
+            if keys[pygame.K_SPACE] and not self.jumped:
+                self.jump_sound.play()
+                self.yvelocity = -15
+                self.jumped = True
+                
+            dy += self.yvelocity
+            self.yvelocity += 1
+            for t in tiles:
+                if t[1].colliderect(self.rect.x + dx, self.rect.y, self.rect.width, self.rect.height):
+                    dx = 0
+                if t[1].colliderect(self.rect.x, self.rect.y + dy, self.rect.width, self.rect.height):
+                    if self.yvelocity > 0:
+                        self.yvelocity = 0
+                        dy = t[1].top - self.rect.bottom
+                        self.jumped = False
+                    else:
+                        self.yvelocity = 0
+                        dy = t[1].bottom - self.rect.top
+                        
+            for enemy in enemy_group.sprites():
+                if enemy.rect.colliderect(self.rect):
+                    if self.yvelocity > 1:
+                        enemy.kill()
+                    else:
+                        self.health -= 1
+                        enemy.kill()
+            print(self.health)
+                
+            self.rect.x += dx
+            self.rect.y += dy
+            self.animation()
