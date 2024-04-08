@@ -1,10 +1,27 @@
 import pygame
 from world import World
-from level1 import world_data
+
 from player import Player
 from button import Button
+import pickle
+level = 1
+
+f = open("level1", "rb")
+world_data = pickle.load(f)
+f.close()
 
 
+def next_level():
+    global level
+    level += 1
+    f = open(f"level{level}", "rb")
+    world_data = pickle.load(f)
+    enemy_group.empty()
+    door_group.empty()
+    game_world = World(world_data, enemy_group, door_group)
+    f.close()
+    return game_world
+    
 
 pygame.init()
 screen_width = 1024
@@ -37,9 +54,11 @@ while running:
         if restart_button.click():
             my_player.__init__()
             enemy_group.empty()
+            door_group.empty()
             game_world = World(world_data, enemy_group, door_group)
             
     if my_player.next_level:
-        print("next level")
+        game_world = next_level()
+        my_player.__init__()
     pygame.display.update()
     clock.tick(60)
