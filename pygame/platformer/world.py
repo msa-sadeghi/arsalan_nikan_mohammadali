@@ -1,7 +1,8 @@
 import pygame
 from enemy import Enemy
+from door import Door
 class World:
-    def __init__(self, world_data,enemy_group):
+    def __init__(self, world_data, enemy_group,door_group):
         self.tile_map = []
         img  = pygame.image.load("assets/background.png")
         self.bg_img = pygame.transform.scale(img, (1024, 704))
@@ -26,6 +27,8 @@ class World:
                     
                 if world_data[i][j] == 3:
                     Enemy(j * 32, i * 32, enemy_group)
+                if world_data[i][j] == 5:
+                    Door(j * 32, i * 32, door_group)
                     
                     
     def draw(self, screen):

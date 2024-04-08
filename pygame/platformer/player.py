@@ -15,6 +15,7 @@ class Player(Sprite):
         self.image = self.right_images[self.frame_index]
         self.rect = self.image.get_rect(topleft=(100,500))
         self.alive = True
+        self.next_level = False
         self.score = 0
         self.health = 3
         self.direction = 1
@@ -44,7 +45,7 @@ class Player(Sprite):
             self.image = self.left_images[self.frame_index]
             
         
-    def move(self, tiles, enemy_group):
+    def move(self, tiles, enemy_group, door_group):
         if self.alive:
             dx = 0
             dy = 0
@@ -85,7 +86,8 @@ class Player(Sprite):
                     else:
                         self.health -= 1
                         enemy.kill()
-            print(self.health)
+            if pygame.sprite.spritecollide(self, door_group, False):
+                self.next_level = True
                 
             self.rect.x += dx
             self.rect.y += dy
