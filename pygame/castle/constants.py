@@ -2,6 +2,10 @@ import pygame
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
 FPS = 60
+ENEMY_NUMBERS = 4
+ENEMY_TYPES = ("knight", "goblin", "purple_goblin", "red_goblin")
+ENEMY_HEALTHS = (100, 150, 175, 200)
+ENEMY_SPEEDS = (1, 2, 3, 4)
 clock = pygame.time.Clock()
 armour = pygame.image.load("assets/armour.png")
 bg = pygame.image.load("assets/bg.png")
