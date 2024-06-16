@@ -11,6 +11,8 @@ class Castle(Sprite):
         self.image = self.image_100
         self.rect = self.image.get_rect(topleft = (x,y))
         self.is_clicked = False
+        self.health = 1000
+        self.max_health = 1000
         
     def draw(self, screen):
         screen.blit(self.image, self.rect)
