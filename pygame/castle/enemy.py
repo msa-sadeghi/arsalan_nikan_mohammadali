@@ -20,20 +20,29 @@ class Enemy(Sprite):
         self.rect = self.image.get_rect(topleft=(x,y))
         self.speed = speed
         self.health = health
+        self.alive = True
         group.add(self)  
         self.last_update_time = pygame.time.get_ticks()  
         self.last_attack_time = pygame.time.get_ticks()  
-    def update(self, castle):
-        if self.rect.right > castle.rect.left:
-            self.update_action("attack")
-        if self.action == "walk":
-            self.rect.x += self.speed
-        if self.action == "attack":
-            if pygame.time.get_ticks() - self.last_attack_time > 1000:
-                self.last_attack_time = pygame.time.get_ticks()
-                castle.health -= 25
-                if castle.health < 0:
-                    castle.health = 0
+    def update(self, castle, bullet_group):
+        if self.alive:
+            
+            if pygame.sprite.spritecollide(self, bullet_group, True):
+                self.health -= 25
+                if self.health <= 0:
+                    self.health = 0
+                    self.update_action("death")
+                    self.alive = False
+            if self.rect.right > castle.rect.left:
+                self.update_action("attack")
+            if self.action == "walk":
+                self.rect.x += self.speed
+            if self.action == "attack":
+                if pygame.time.get_ticks() - self.last_attack_time > 1000:
+                    self.last_attack_time = pygame.time.get_ticks()
+                    castle.health -= 25
+                    if castle.health < 0:
+                        castle.health = 0
             
         self.animation()
         
@@ -43,7 +52,11 @@ class Enemy(Sprite):
             self.last_update_time = pygame.time.get_ticks()
             self.image_number += 1
         if self.image_number >= len(self.all_images[self.action]):
-            self.image_number = 0
+            if self.action == "death":
+                self.image_number = len(self.all_images[self.action]) - 1
+            else:
+                self.image_number = 0
     def update_action(self,new_action):
         if self.action != new_action:
             self.action = new_action
+            self.image_number = 0

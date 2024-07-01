@@ -15,6 +15,11 @@ class Castle(Sprite):
         self.max_health = 1000
         
     def draw(self, screen):
+        if self.health <= 250:
+            self.image = self.image_25
+        elif self.health <= 500:
+            self.image = self.image_50
+        else: self.image = self.image_100
         screen.blit(self.image, self.rect)
         
     def shoot(self, group):
