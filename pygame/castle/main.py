@@ -2,6 +2,8 @@ from constants import *
 from castle import Castle
 from enemy import Enemy
 import random
+import pygame
+pygame.init()
 level_difficulty = 0
 MAX_DIFFICULTY = 1000
 enemy_spawn_time = pygame.time.get_ticks()
@@ -35,7 +37,7 @@ while running:
     castle.shoot(bullet_group)
     bullet_group.draw(screen)
     bullet_group.update()
-    enemy_group.update(castle, bullet_group)
+    enemy_group.update(castle, bullet_group, screen)
     enemy_group.draw(screen)
     pygame.display.update()
     clock.tick(FPS)

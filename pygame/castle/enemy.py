@@ -20,12 +20,26 @@ class Enemy(Sprite):
         self.rect = self.image.get_rect(topleft=(x,y))
         self.speed = speed
         self.health = health
+        self.max_health = health
         self.alive = True
         group.add(self)  
         self.last_update_time = pygame.time.get_ticks()  
         self.last_attack_time = pygame.time.get_ticks()  
-    def update(self, castle, bullet_group):
+        self.font = pygame.font.SysFont("arial", 18)
+    def update(self, castle, bullet_group, screen):
+      
+            
+        
         if self.alive:
+            if self.health >= self.max_health/2:
+                color = (0,0,0)
+            else:
+                color = (255,0,0)
+            t = self.font.render(str(self.health), True, color)
+            r = t.get_rect()
+            r.bottom = self.rect.top
+            r.centerx = self.rect.centerx
+            screen.blit(t, r)
             
             if pygame.sprite.spritecollide(self, bullet_group, True):
                 self.health -= 25
