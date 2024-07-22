@@ -3,6 +3,7 @@ from castle import Castle
 from enemy import Enemy
 import random
 import pygame
+from button import Button
 pygame.init()
 level_difficulty = 0
 MAX_DIFFICULTY = 1000
@@ -24,6 +25,10 @@ def spawn_enemies():
 castle = Castle(SCREEN_WIDTH- 280, SCREEN_HEIGHT-350)
 bullet_group = pygame.sprite.Group()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+
+repair_button = Button(repair, SCREEN_WIDTH - 250, 10)
+
+
 running = True
 while running:
     for event in pygame.event.get():
@@ -33,6 +38,9 @@ while running:
     
     spawn_enemies()
     screen.blit(bg, (0,0))
+    repair_button.draw(screen)
+    if repair_button.clicked():
+        castle.repair()
     castle.draw(screen)
     castle.shoot(bullet_group)
     bullet_group.draw(screen)

@@ -47,6 +47,7 @@ class Enemy(Sprite):
                     self.health = 0
                     self.update_action("death")
                     self.alive = False
+                    castle.money += 100
             if self.rect.right > castle.rect.left:
                 self.update_action("attack")
             if self.action == "walk":

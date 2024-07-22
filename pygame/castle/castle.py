@@ -14,6 +14,7 @@ class Castle(Sprite):
         self.is_clicked = False
         self.health = 1000
         self.max_health = 1000
+        self.money = 1000
         self.health_bar = HealthBar(self.rect.centerx, self.rect.top, self.health, self.max_health)
         
         
@@ -36,4 +37,12 @@ class Castle(Sprite):
             Bullet(self.rect.midleft[0], self.rect.midleft[1], math.atan2(yd,xd), group)
         if not pygame.mouse.get_pressed()[0]:
             self.is_clicked = False
+            
+    def repair(self):
+        print("***********************",self.health)
+        if self.money >= 1000:
+            self.health += 500
+            self.money -= 1000
+            if self.health >= self.max_health:
+                self.health = self.max_health
         
